@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model StoreConfig {
+  id                    String   @id @default("default")
+  storeName             String   @default("Anaya Botanics (WooCommerce Sandbox)")
+  mode                  String   @default("sandbox") // "sandbox" | "woocommerce"
+  wooUrl                String   @default("")
+  wooConsumerKey        String   @default("")
+  wooConsumerSecret     String   @default("")
+  wooConnected          Boolean  @default(false)
+  wooVersion            String   @default("WooCommerce 9.6 / HPOS Active")
+  activeFault           String   @default("NONE") // "NONE" | "N_PLUS_1" | "PAYMENT_WEBHOOK" | "SHIPPING_API"
+  shippingBannerEnabled Boolean  @default(true)
+  freeShippingThreshold Int      @default(75)
+  checkoutBannerText    String   @default("Free express shipping on orders over $75")
+  promoDiscountPercent  Int      @default(0)
+  redisObjectCache      Boolean  @default(true)
+  hposEnabled           Boolean  @default(true)
+  autoScalingActive     Boolean  @default(true)
+  updatedAt             DateTime @updatedAt
+}
+
+model EnvironmentNode {
+  id             String   @id
+  name           String   // "DEV" | "QA" | "PROD"
+  url            String
+  versionTag     String
+  commitSha      String
+  phpRuntime     String
+  workerPool     String
+  p95LatencyMs   Int
+  uptimePercent  String
+  status         String   // "healthy" | "degraded" | "staging"
+  lastDeployedAt DateTime @default(now())
+}
+
+model Product {
+  id          String @id @default(cuid())
+  sku         String @unique
+  name        String
+  slug        String @unique
+  category    String
+  priceCents  Int
+  stock       Int
+  accentColor String @default("#10b981")
+  shortDesc   String
+  description String
+  altText     String
+  seoScore    Int    @default(92)
+}
+
+model DemoOrder {
+  id            String   @id @default(cuid())
+  orderNumber   String   @unique
+  customerEmail String
+  itemsSummary  String
+  totalCents    Int
+  status        String   // "completed" | "failed" | "abandoned"
+  checkoutMs    Int
+  environment   String   @default("PROD")
+  createdAt     DateTime @default(now())
+}
+
+model RevenueIncident {
+  id                 String   @id @default(cuid())
+  title              String
+  faultType          String
+  severity           String   // "critical" | "warning" | "resolved"
+  revenueAtRiskPerHr Int
+  affectedEndpoint   String
+  p99LatencyMs       Int
+  traceJson          String
+  diffPatch          String
+  status             String   @default("open") // "open" | "staged_qa" | "resolved"
+  createdAt          DateTime @default(now())
+}
+
+model BuilderPatch {
+  id                String   @id @default(cuid())
+  prompt            String
+  summary           String
+  targetEnv         String   @default("QA")
+  diffText          String
+  smokeTestStatus   String   @default("passed")
+  appliedConfigJson String   @default("{}")
+  status            String   @default("staged_qa") // "staged_qa" | "deployed" | "rolled_back"
+  createdAt         DateTime @default(now())
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  actor       String
+  role        String   // "Owner" | "Admin" | "Editor" | "Viewer"
+  action      String
+  environment String
+  detail      String
+  createdAt   DateTime @default(now())
+}
+
+model ContactLead {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  storeUrl      String
+  platform      String
+  monthlyOrders String
+  notes         String
+  createdAt     DateTime @default(now())
+}

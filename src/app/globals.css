@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbfbfd;
+  --foreground: #1d1d1f;
+  --muted: #6e6e73;
+  --surface: #f5f5f7;
+  --card: #ffffff;
+  --hairline: rgba(0, 0, 0, 0.08);
+  --accent: #0071e3;
+  --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
@@ -12,15 +18,178 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes stepFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes panelReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes subtleGlowPulse {
+  0%, 100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.hero-enter-1 {
+  animation: heroFadeUp 0.65s var(--ease-apple) both;
+}
+
+.hero-enter-2 {
+  animation: heroFadeUp 0.72s var(--ease-apple) 70ms both;
+}
+
+.hero-enter-3 {
+  animation: heroFadeUp 0.76s var(--ease-apple) 140ms both;
+}
+
+.hero-enter-4 {
+  animation: heroFadeUp 0.8s var(--ease-apple) 210ms both;
+}
+
+.hero-enter-stage {
+  animation: heroFadeUp 0.9s var(--ease-apple) 260ms both;
+}
+
+.animate-step-in {
+  animation: stepFadeIn 0.32s var(--ease-apple) both;
+}
+
+.animate-panel-in {
+  animation: panelReveal 0.42s var(--ease-apple) both;
+}
+
+.animate-modal-in {
+  animation: modalScaleIn 0.34s var(--ease-apple) both;
+}
+
+.animate-studio-glow {
+  animation: subtleGlowPulse 5s ease-in-out infinite;
+}
+
+.apple-card {
+  transition:
+    transform 0.4s var(--ease-apple),
+    box-shadow 0.4s var(--ease-apple),
+    border-color 0.3s ease;
+}
+
+.apple-card:hover {
+  transform: translate3d(0, -3px, 0);
+}
+
+.apple-btn {
+  transition:
+    transform 0.2s var(--ease-apple),
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.apple-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.studio-shadow {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 8px 24px -6px rgba(0, 0, 0, 0.06),
+    0 24px 60px -15px rgba(0, 0, 0, 0.1);
+}
+
+.studio-shadow-hover:hover {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 16px 36px -8px rgba(0, 0, 0, 0.09),
+    0 32px 72px -18px rgba(0, 0, 0, 0.14);
+}
+
+.hardware-frame-shadow {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09) inset,
+    0 40px 100px -24px rgba(0, 0, 0, 0.48),
+    0 12px 30px -10px rgba(0, 0, 0, 0.28);
+}
+
+.code-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.code-scroll::-webkit-scrollbar-thumb {
+  background: rgba(134, 134, 139, 0.35);
+  border-radius: 9999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero-enter-1,
+  .hero-enter-2,
+  .hero-enter-3,
+  .hero-enter-4,
+  .hero-enter-stage,
+  .animate-step-in,
+  .animate-panel-in,
+  .animate-modal-in,
+  .animate-studio-glow {
+    animation: none !important;
+  }
+  .apple-card:hover {
+    transform: none;
+  }
 }
